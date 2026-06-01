@@ -1,0 +1,33 @@
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x /usr/local/bin/brew ]]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+_prepend_path() {
+  for _p in "$@"; do
+    [[ -d "$_p" ]] || continue
+    case ":${PATH:-}:" in
+      *":${_p}:"*) ;;
+      *) PATH="${_p}:${PATH:-}" ;;
+    esac
+  done
+}
+
+_prepend_path \
+  "$HOME/bin" \
+  "$HOME/.local/bin" \
+  "$HOME/Library/pnpm" \
+  /opt/homebrew/opt/trash-cli/bin \
+  /usr/local/opt/trash-cli/bin
+
+if command -v brew >/dev/null 2>&1; then
+  for _pkg in llvm binutils; do
+    _prefix="$(brew --prefix "$_pkg" 2>/dev/null)" || continue
+    _prepend_path "$_prefix/bin"
+  done
+  unset _pkg _prefix
+fi
+
+unset -f _prepend_path 2>/dev/null || true
+export PATH
