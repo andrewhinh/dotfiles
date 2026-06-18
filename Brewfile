@@ -1,5 +1,6 @@
 brew "tree"
 brew "fd"
+brew "ripgrep"
 brew "fzf"
 brew "thefuck"
 brew "trash-cli"
