@@ -8,7 +8,7 @@ for f in \
   .gitconfig .gitignore_global .vimrc .node-version
 do
   [[ -f "$DOTFILES/$f" ]] || { echo "missing $f" >&2; exit 1; }
-  ln -sf "$DOTFILES/$f" "$HOME/$f"
+  /bin/cp -f "$DOTFILES/$f" "$HOME/$f"
 done
 
-echo "Linked dotfiles from $DOTFILES"
+echo "Copied dotfiles from $DOTFILES"
